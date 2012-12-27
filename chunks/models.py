@@ -16,7 +16,7 @@ class Chunk(models.Model):
     description = models.CharField(_(u'Description'), blank=True, max_length=64, help_text=_(u"Short Description"))
     site        = models.ForeignKey(Site, default=Site.objects.get_current())
 
-    objects = Manager()
+    objects = models.Manager()
     on_site = CurrentSiteManager()
 
     class Meta:
