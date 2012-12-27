@@ -53,7 +53,7 @@ class GetChunkNode(template.Node):
 
     def render(self, context):
         try:
-            chunk = Chunk.objects.get(key=self.key)
+            chunk = Chunk.objects.get(key=self.key, site=self.site)
         except Chunk.DoesNotExist:
             chunk = None
         context[self.varname] = chunk
