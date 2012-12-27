@@ -27,7 +27,7 @@ class ChunkNode(template.Node):
        self.cache_time = cache_time
 
     def render(self, context):
-        site = self.variable.resolve(self.site)
+        site = self.site.resolve(context)
         
         try:
             cache_key = CACHE_PREFIX + self.key
@@ -57,7 +57,7 @@ class GetChunkNode(template.Node):
 
     def render(self, context):
         try:
-            site = self.variable.resolve(self.site)
+            site = self.site.resolve(context)
             chunk = Chunk.objects.get(key=self.key, site=site)
         except Chunk.DoesNotExist:
             chunk = None
