@@ -23,15 +23,17 @@ def do_chunk(parser, token):
 class ChunkNode(template.Node):
     def __init__(self, key, site, cache_time=0):
        self.key = key
-       self.site = site
+       self.site = template.Variable(site)
        self.cache_time = cache_time
 
     def render(self, context):
+        site = self.variable.resolve(self.site)
+        
         try:
             cache_key = CACHE_PREFIX + self.key
             c = cache.get(cache_key)
             if c is None:
-                c = Chunk.objects.get(key=self.key, site=self.site)
+                c = Chunk.objects.get(key=self.key, site=site)
                 cache.set(cache_key, c, int(self.cache_time))
             content = c.content
         except Chunk.DoesNotExist:
@@ -50,12 +52,13 @@ def do_get_chunk(parser, token):
 class GetChunkNode(template.Node):
     def __init__(self, key, site, varname):
         self.key = key
-        self.site = site
+        self.site = template.Variable(site)
         self.varname = varname
 
     def render(self, context):
         try:
-            chunk = Chunk.objects.get(key=self.key, site=self.site)
+            site = self.variable.resolve(self.site)
+            chunk = Chunk.objects.get(key=self.key, site=site)
         except Chunk.DoesNotExist:
             chunk = None
         context[self.varname] = chunk
