@@ -10,7 +10,7 @@ class Chunk(models.Model):
     any template with the use of a special template
     tag
     """
-    key         = models.CharField(_(u'Key'), help_text=_(u"A unique name for this chunk of content"), blank=False, max_length=255, unique=True)
+    key         = models.CharField(_(u'Key'), help_text=_(u"A unique name for this chunk of content"), blank=False, max_length=255)
     content     = models.TextField(_(u'Content'), blank=True)
     description = models.CharField(_(u'Description'), blank=True, max_length=64, help_text=_(u"Short Description"))
     site        = models.ForeignKey(Site, default=Site.objects.get_current())
